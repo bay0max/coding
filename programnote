@@ -1,7 +1,37 @@
 一、排序
-1.冒泡排序
+1.冒泡排序(bubble sort)
 每循环一次都会在已经确定顺序的部分加一个元素
+复杂度O(n^2)
 a=[3,2,4,1,5,6]
 n=len(a)
-for i in range(0,n):
+for i in range(n-1,0,-1):
   for j in range(0,i):
+    if a[j]>a[j+1]:
+      tmp=a[j]
+      a[j]=a[j+1]
+      a[j+1]=tmp
+print(a)
+
+存在某次交换之后就排好序的情况，可以加入flag，如果一次循环后没有发生交换，则flag不变，说明已经排好序
+2.快速排序(quick sort)
+分治思想  从数列中取出一个key值，比他小的放左边，比他大的放右边，对左右两边继续进行这个步骤。
+复杂度O(nlogn)
+递归：
+a=[72,6,57,88,60,42,83,73,48,85]
+def quicksort(a,left,right):
+  low=left;high=right
+  key=a[0]
+  if left>right:
+    return 
+  while left<right:
+    while left<right and a[right]>key:
+      right-=1
+    a[left]=a[right]
+    while left<right and a[left]<key:
+      left+=1
+    a[right]=a[left]
+   a[left]=key
+   quicksort(a,low,left-1)
+   quicksort(a,left+1,high)
+
+3.归并排序(merge sort)
