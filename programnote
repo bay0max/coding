@@ -35,3 +35,37 @@ def quicksort(a,left,right):
    quicksort(a,left+1,high)
 
 3.归并排序(merge sort)
+进行二分，然后每次合并两个有序数组
+def merge(a,b):
+    m=len(a);n=len(b)
+    i=0;j=0
+    c=[]
+    while i<m and j<n:
+
+        if a[i]>b[j] :
+            c.append(b[j])
+            j+=1
+        else:
+            c.append(a[i])
+            i+=1
+    if i==m:
+        for item in b[j:]:
+            c.append(item)
+    else:
+        for item in a[i:]:
+            c.append(item)
+
+    return c
+def mergesort(a):
+    if len(a)<=1:
+        return a
+    m=int(len(a)/2)
+    left=mergesort(a[:m])
+    right=mergesort(a[m:])
+    print('left',left)
+    print('right',right)
+    ans=merge(left,right)
+    print('ans',ans)
+    return ans
+a=[3,4,34,2,68,18,5,5,20,21]
+c=mergesort(a)
