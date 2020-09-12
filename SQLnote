@@ -1,1 +1,106 @@
+概念
+SQL是结构化查询语言，所有关系型数据库都使用SQL作为标准数据库语言
+SQL架构： SQL query --> query language processor(parse and optimizer) -->DBMS engine(file manager and transaction manager)-->physical database
+SQL语句分为数据定义语言（DDL）、数据操纵语言（DML）、数据控制语言（DCL）
+数据库中的数据结构：表、字段、记录/行、列(列包括字段名)
+SQL约束：对数据进行储存或者处理的规则，约束可能是针对表或者列的。常见的约束：确保不能有NULL值(NULL不代表没有数据，代表的是未知数据)，确保一列中所有的值是唯一的
+RDBMS：关系型数据库管理系统
+数据完整性：（1）实体完整性: 表中没有重复行；（2）域完整性: 通过限制的类型，格式或值的范围强制对于一个给定列的有效条目；
+（3）参考完整性: 行不能被删除，被其他记录使用；（4）用户定义的完整性: 强制执行不属于实体，域和参照完整性一些具体的业务规则；
+一、数据库约束
+1.NOT NULL约束：在创建表的时候标注 或者通过SQL语句
+例子：
+CREATE TABLE CUSTOMERS(
+    ID INT  NOT NULL,
+    NAME VARCHAR (20)     NOT NULL,
+    AGE  INT              NOT NULL,
+    ADDRESS  CHAR (25) ,
+    SALARY   DECIMAL (18, 2),       
+    PRIMARY KEY (ID)   --设置主键
+);
 
+ALTER TABLE CUSTOMERS MODIFY SALARY DECIMAL (18,2) NOT NULL;
+2.DEFAULT 约束
+CREATE TABLE CUSTOMERS(
+       ID   INT              NOT NULL,
+       NAME VARCHAR (20)     NOT NULL,
+       AGE  INT              NOT NULL,
+       ADDRESS  CHAR (25) ,
+       SALARY   DECIMAL (18, 2) DEFAULT 5000.00,      --默认值为5000
+       PRIMARY KEY (ID)
+);
+或者用ALTER TABLE CUSTOMERS  MODIFY SALARY  DECIMAL (18, 2) DEFAULT 5000.00;
+另外有ALTER TABLE CUSTOMERS   ALTER COLUMN SALARY DROP DEFAULT;--删除DEFAULT约束
+3.唯一约束
+CREATE TABLE CUSTOMERS(
+       ID   INT              NOT NULL,
+       NAME VARCHAR (20)     NOT NULL,
+       AGE  INT              NOT NULL UNIQUE,--UNIQUE是唯一约束
+       ADDRESS  CHAR (25) ,
+       SALARY   DECIMAL (18, 2),       
+       PRIMARY KEY (ID)
+);
+还可以ALTER TABLE CUSTOMERS ADD CONSTRAINT myUniqueConstraint UNIQUE(AGE, SALARY);  --设置多个字段的唯一性约束
+4.主键外键
+主键是一个在一个数据库表中唯一标识每个行/记录表中的一个字段。主键必须包含唯一值。主键列不能有NULL值。
+一个表只能有一个主键，它可以由单个或多个字段组成。当多个字段被用来作为主键，它们被称为复合键。
+如果一个表有任何字段定义为主键，那么就不能有两个记录具有字段的值相同。
+CREATE TABLE CUSTOMERS(
+       ID   INT              NOT NULL,
+       NAME VARCHAR (20)     NOT NULL,
+       AGE  INT              NOT NULL,
+       ADDRESS  CHAR (25) ,
+       SALARY   DECIMAL (18, 2),       
+       PRIMARY KEY (ID)
+);
+或者ALTER TABLE CUSTOMERS ADD CONSTRAINT PK_CUSTID PRIMARY KEY (ID, NAME);--多个主键
+删除主键： ALTER TABLE CUSTOMERS DROP PRIMARY KEY ;
+
+外键是用于两个表链接在一起的键。这有时被称为一个参考项。
+外键是一列或多列的值匹配在不同的表的主键的组合。
+如果一个表有字段定义的主键，那么就不能有两个记录具有字段的值相同。
+CREATE TABLE ORDERS (
+       ID          INT        NOT NULL,
+       DATE        DATETIME, 
+       CUSTOMER_ID INT references CUSTOMERS(ID),--来自CUSTOMERS的外键
+       AMOUNT     double,
+       PRIMARY KEY (ID)
+);
+ALTER TABLE ORDERS  ADD FOREIGN KEY (Customer_ID) REFERENCES CUSTOMERS (ID);
+5.CHECK约束
+CREATE TABLE CUSTOMERS(
+       ID   INT              NOT NULL,
+       NAME VARCHAR (20)     NOT NULL,
+       AGE  INT              NOT NULL CHECK (AGE >= 18),
+       ADDRESS  CHAR (25) ,
+       SALARY   DECIMAL (18, 2),       
+       PRIMARY KEY (ID)
+);
+ALTER TABLE CUSTOMERS MODIFY AGE INT NOT NULL CHECK (AGE >= 18 );
+ALTER TABLE CUSTOMERS ADD CONSTRAINT myCheckConstraint CHECK(AGE >= 18);--可以设置多个字段的约束
+6索引约束
+索引是用来快速创建并从数据库中检索数据。索引可以通过使用单个或一组的列在一个表中创建,对一列或多列进行排序。 当创建索引时，它被分配一个ROWID在每一行进行排序出来的数据之前。
+索引的数据结构基础是B+树
+B+树
+CREATE INDEX index_name  ON table_name ( column1, column2.....);
+7.三个范式
+1NF:数据项不可再分;
+2NF:每个数据项都和主键相关，不能与主键的一部分相关(这一条针对联合主键);
+3NF:所有非主键字段不依赖于其他非主键，也可以说是跟主键直接相关而非间接相关(例如学生性别和学生年龄直接依赖学会说呢过姓名，
+如果把学号当做主键则不满足第三范式)
+(1)1NF(2)(3)
+二、SQL语言
+1.常用语句
+select column_name1,column_name2.... from table_name where column_name operator value;
+
+SELECT - 从数据库中提取数据  SELECT DISTINCT 输出非重复字段
+UPDATE - 更新数据库中的数据
+DELETE - 从数据库中删除数据
+INSERT INTO - 向数据库中插入新数据
+CREATE DATABASE - 创建新数据库
+ALTER DATABASE - 修改数据库
+CREATE TABLE - 创建新表
+ALTER TABLE - 变更（改变）数据库表
+DROP TABLE - 删除表
+CREATE INDEX - 创建索引（搜索键）
+DROP INDEX - 删除索引
