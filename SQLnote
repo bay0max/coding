@@ -91,11 +91,15 @@ CREATE INDEX index_name  ON table_name ( column1, column2.....);
 (1)1NF(2)(3)
 二、SQL语言
 1.常用语句
-select column_name1,column_name2.... from table_name where column_name operator value;
-
 SELECT - 从数据库中提取数据  SELECT DISTINCT 输出非重复字段
-UPDATE - 更新数据库中的数据
+select column_name1,column_name2.... from table_name where column_name operator value;
+operator的种类常见的> < =  >= <=  <>(不等于，有时也写作!=)   LIKE(搜索某种模式，用通配符标识，需用单引号。同理还有NOT LIKE)  IN(某个列有多个可能值，这些val放在括号中，逗号隔开)  BETWEEN val1 AND val2
+逻辑判断 NOT AND OR IS
+
+UPDATE - 更新数据库中的数据，使用时要格外小心，如果后面没有WHERE子句，会把所有的数据都修改
+UPDATE table_name SET column1=value1,column2=value2,... WHERE some_column=some_value;
 DELETE - 从数据库中删除数据
+DELETE FROM Websites WHERE name='Facebook' AND country='USA';不加WHERE子句则删除所有表中记录只留下表
 INSERT INTO - 向数据库中插入新数据
 CREATE DATABASE - 创建新数据库
 ALTER DATABASE - 修改数据库
@@ -104,3 +108,26 @@ ALTER TABLE - 变更（改变）数据库表
 DROP TABLE - 删除表
 CREATE INDEX - 创建索引（搜索键）
 DROP INDEX - 删除索引
+
+ORDER BY column_name 默认升序排序，降序在后面再加一个DESC 升序加ASC.  后面跟多列的时候，先按前面的排序 再按后面的排序
+INSERT INTO table_name VALUES (val1,val2,val3...);
+INSERT INTO table_name (column1,column2,column3,...) VALUES (value1,value2,value3,...);在表中插入新的记录，两种都可
+LIMIT i,n  从i开始输出n条记录
+LIkE 'G%'(以G开头)   LIkE '%s'(以s结尾)  LIkE '%is%'(包含is)
+REGEXP 或 NOT REGEXP来操作正则表达式，类似于LIKE. ^本身标识字符串开始的位置，但是用在方括号中表示不匹配方括号中字母 _用来替代一个字母 %用来替代多个字母
+SELECT * FROM Websites WHERE name BETWEEN 'A' AND 'H';BETWEEN作用于字母的时候表示在这两个字母为开头的字符串中筛选
+AS 标识别名  SELECT column_name(s) FROM table_name AS alias_name;SELECT column_name AS alias_name FROM table_name;分别表示表的别名进和列的别名
+SELECT name, CONCAT(url, ', ', alexa, ', ', country) AS site_info FROM Websites;CONCAT将多个列的记录连接起来
+SELECT w.name, w.url, a.count, a.date
+FROM Websites AS w, access_log AS a
+WHERE a.site_id=w.id and w.name="菜鸟教程";
+SQL连接(join)https://www.runoob.com/sql/sql-join.html 之后再细看
+EXISTS也是操作符 判断记录是否存在
+HAVING 使用聚合函数之后无法使用where进行筛选 因此使用HAVING
+例如
+SELECT Websites.name, Websites.url, SUM(access_log.count) AS nums FROM (access_log
+INNER JOIN Websites
+ON access_log.site_id=Websites.id)
+GROUP BY Websites.name
+HAVING SUM(access_log.count) > 200;
+
