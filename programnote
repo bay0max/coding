@@ -19,20 +19,21 @@ print(a)
 递归：
 a=[72,6,57,88,60,42,83,73,48,85]
 def quicksort(a,left,right):
-  low=left;high=right
-  key=a[left]
-  if left>right:
-    return 
-  while left<right:
-    while left<right and a[right]>key:
-      right-=1
-    a[left]=a[right]
-    while left<right and a[left]<key:
-      left+=1
-    a[right]=a[left]
-   a[left]=key
-   quicksort(a,low,left-1)
-   quicksort(a,left+1,high)
+    if left>right:
+        return 
+    low=left;high=right
+    key=a[left]
+
+    while left<right:
+        while left<right and a[right]>key:
+            right-=1
+        a[left]=a[right]
+        while left<right and a[left]<key:
+            left+=1
+        a[right]=a[left]
+    a[left]=key
+    quicksort(a,low,left-1)
+    quicksort(a,left+1,high)
 
 3.归并排序(merge sort)
 进行二分，然后每次合并两个有序数组
