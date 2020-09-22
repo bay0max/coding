@@ -20,7 +20,7 @@ print(a)
 a=[72,6,57,88,60,42,83,73,48,85]
 def quicksort(a,left,right):
   low=left;high=right
-  key=a[0]
+  key=a[left]
   if left>right:
     return 
   while left<right:
