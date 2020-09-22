@@ -101,6 +101,8 @@ UPDATE table_name SET column1=value1,column2=value2,... WHERE some_column=some_v
 DELETE - 从数据库中删除数据
 DELETE FROM Websites WHERE name='Facebook' AND country='USA';不加WHERE子句则删除所有表中记录只留下表
 INSERT INTO - 向数据库中插入新数据
+INSERT INTO table_name VALUES (val1,val2,val3...);
+INSERT INTO table_name (column1,column2,column3,...) VALUES (value1,value2,value3,...);在表中插入新的记录，两种都可
 CREATE DATABASE - 创建新数据库
 ALTER DATABASE - 修改数据库
 CREATE TABLE - 创建新表
@@ -110,8 +112,6 @@ CREATE INDEX - 创建索引（搜索键）
 DROP INDEX - 删除索引
 
 ORDER BY column_name 默认升序排序，降序在后面再加一个DESC 升序加ASC.  后面跟多列的时候，先按前面的排序 再按后面的排序
-INSERT INTO table_name VALUES (val1,val2,val3...);
-INSERT INTO table_name (column1,column2,column3,...) VALUES (value1,value2,value3,...);在表中插入新的记录，两种都可
 LIMIT i,n  从i开始输出n条记录
 LIkE 'G%'(以G开头)   LIkE '%s'(以s结尾)  LIkE '%is%'(包含is)
 REGEXP 或 NOT REGEXP来操作正则表达式，类似于LIKE. ^本身标识字符串开始的位置，但是用在方括号中表示不匹配方括号中字母 _用来替代一个字母 %用来替代多个字母
